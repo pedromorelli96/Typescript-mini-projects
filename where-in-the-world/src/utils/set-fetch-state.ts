@@ -1,4 +1,3 @@
-import { FetchError } from "../api/xml-get-countries";
 import { elements } from "./elements";
 
 type Args =
@@ -10,7 +9,7 @@ type Args =
     }
   | {
       state: "error";
-      error: FetchError;
+      error: Error;
     };
 
 export function setFetchState(args: Args): void {

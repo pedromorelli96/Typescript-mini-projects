@@ -1,5 +1,6 @@
 import { Country } from "../types/countries";
 import { elements } from "./elements";
+import { renderLearnMore } from "./render-learn-more";
 
 export function renderCountries(countries: Country[]): void {
   elements.countryList.innerHTML = "";
@@ -31,7 +32,9 @@ export function renderCountries(countries: Country[]): void {
     );
 
     const learnMoreButton = document.createElement("button");
-    learnMoreButton.onclick = () => {};
+    learnMoreButton.onclick = () => {
+      renderLearnMore(country);
+    };
     learnMoreButton.className = "text-xs font-medium self-end px-6 py-4 hover:animate-pulse";
     learnMoreButton.type = "button";
     learnMoreButton.textContent = "Learn more →";

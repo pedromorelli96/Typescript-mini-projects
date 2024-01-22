@@ -1,27 +1,41 @@
 import "./styles.css";
-import { type FetchError, xmlGetCountries } from "./api/xml-get-countries";
 import { elements } from "./utils/elements";
-import { setFetchState } from "./utils/set-fetch-state";
+import { countries, initializeLocalStorage } from "./storage/countries";
 import { renderCountries } from "./utils/render-countries";
 
-elements.form.onsubmit = (e) => {
+void initializeLocalStorage();
+
+elements.form.onsubmit = async (e) => {
   e.preventDefault();
 
-  const input = elements.searchInput.value.trim();
-  setFetchState({
-    state: "pending",
-  });
-  xmlGetCountries(input)
-    .then((countries) => {
-      setFetchState({
-        state: "success",
-      });
-      renderCountries(countries);
-    })
-    .catch((error: FetchError) => {
-      setFetchState({
-        state: "error",
-        error,
-      });
-    });
+  const input = elements.searchInput.value.trim().toLowerCase();
+
+  const filteredCountries = countries.filter((country) =>
+    country.name.common.toLowerCase().includes(input)
+  );
+
+  renderCountries(filteredCountries);
+
+  // setFetchState({
+  //   state: "pending",
+  // });
+  // try {
+  //   const countries = await api.getCountriesByName(input);
+  //   renderCountries(countries);
+  //   setFetchState({
+  //     state: "success",
+  //   });
+  // } catch (error: unknown) {
+  //   if (error instanceof Error) {
+  //     setFetchState({
+  //       state: "error",
+  //       error,
+  //     });
+  //   } else {
+  //     setFetchState({
+  //       state: "error",
+  //       error: new Error("Something went wrong!"),
+  //     });
+  //   }
+  // }
 };
